@@ -34,8 +34,10 @@ class InscricaoObserver
         // envio do e-mail "7" do README.md
         $passo = 'início';
         $user = $inscricao->pessoas('Autor');
+        $rota = request()->segment(1);
+
         \Mail::to($user->email)
-            ->queue(new InscricaoMail(compact('passo', 'inscricao', 'user')));
+            ->queue(new InscricaoMail(compact('passo', 'inscricao', 'user', 'rota')));
     }
 
     /**
