@@ -26,7 +26,7 @@ class DisciplinaController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('disciplinas.viewAny');
+        Gate::authorize('disciplinas.viewAny');
 
         \UspTheme::activeUrl('disciplinas');
         if (!$request->ajax())
@@ -42,7 +42,7 @@ class DisciplinaController extends Controller
      */
     public function show(Request $request, string $id)
     {
-        $this->authorize('disciplinas.viewAny');
+        Gate::authorize('disciplinas.viewAny');
 
         \UspTheme::activeUrl('disciplinas');
         if ($request->ajax())
@@ -57,7 +57,7 @@ class DisciplinaController extends Controller
      */
     public function store(DisciplinaRequest $request)
     {
-        $this->authorize('disciplinas.create');
+        Gate::authorize('disciplinas.create');
 
         $validator = Validator::make($request->all(), DisciplinaRequest::rules, DisciplinaRequest::messages);
         if ($validator->fails())
@@ -79,7 +79,7 @@ class DisciplinaController extends Controller
      */
     public function update(DisciplinaRequest $request, string $id)
     {
-        $this->authorize('disciplinas.update');
+        Gate::authorize('disciplinas.update');
 
         $validator = Validator::make($request->all(), DisciplinaRequest::rules, DisciplinaRequest::messages);
         if ($validator->fails())
@@ -104,7 +104,7 @@ class DisciplinaController extends Controller
      */
     public function destroy(DisciplinaRequest $request, string $id)
     {
-        $this->authorize('disciplinas.delete');
+        Gate::authorize('disciplinas.delete');
 
         $disciplina = Disciplina::find((int) $id);
         if ($disciplina->selecoes()->exists())

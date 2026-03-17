@@ -24,7 +24,7 @@ class ParametroController extends Controller
      */
     public function edit()
     {
-        $this->authorize('parametros.update');
+        Gate::authorize('parametros.update');
 
         \UspTheme::activeUrl('parametros');
         return view('parametros.edit', $this->monta_compact());
@@ -38,7 +38,7 @@ class ParametroController extends Controller
      */
     public function update(ParametroRequest $request)
     {
-        $this->authorize('parametros.update');
+        Gate::authorize('parametros.update');
 
         $validator = Validator::make($request->all(), ParametroRequest::rules, ParametroRequest::messages);
         if ($validator->fails())

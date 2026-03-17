@@ -22,6 +22,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
@@ -54,7 +55,7 @@ class SelecaoController extends Controller
      */
     public function index()
     {
-        $this->authorize('selecoes.viewAny');
+        Gate::authorize('selecoes.viewAny');
 
         \UspTheme::activeUrl('selecoes');
         AtualizaStatusSelecoes::dispatch()->onConnection('sync');
@@ -72,7 +73,7 @@ class SelecaoController extends Controller
      */
     public function create()
     {
-        $this->authorize('selecoes.create');
+        Gate::authorize('selecoes.create');
 
         \UspTheme::activeUrl('selecoes');
         return view('selecoes.edit', $this->monta_compact(new Selecao, 'create'));
@@ -86,7 +87,7 @@ class SelecaoController extends Controller
      */
     public function store(SelecaoRequest $request)
     {
-        $this->authorize('selecoes.create');
+        Gate::authorize('selecoes.create');
 
         $selecaoRequest = new SelecaoRequest();
         $validator = Validator::make($request->all(), $selecaoRequest->rules(), $selecaoRequest->messages());
@@ -161,7 +162,7 @@ class SelecaoController extends Controller
      */
     public function edit(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $selecao->atualizarStatus();
 
@@ -178,7 +179,7 @@ class SelecaoController extends Controller
      */
     public function update(SelecaoRequest $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $selecaoRequest = new SelecaoRequest();
         $validator = Validator::make($request->all(), $selecaoRequest->rules(), $selecaoRequest->messages());
@@ -278,7 +279,7 @@ class SelecaoController extends Controller
 
     public function storeTemplateJson(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         \UspTheme::activeUrl('selecoes');
         $newjson = $request->template;
@@ -290,7 +291,7 @@ class SelecaoController extends Controller
 
     public function createTemplate(Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         \UspTheme::activeUrl('selecoes');
         $template = json_decode(JSONForms::orderTemplate($selecao->template), true);
@@ -299,7 +300,7 @@ class SelecaoController extends Controller
 
     public function storeTemplate(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $request->validate([
             'template.*.label' => 'required',
@@ -344,7 +345,7 @@ class SelecaoController extends Controller
 
     public function createTemplateValue(Selecao $selecao, string $field)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         \UspTheme::activeUrl('selecoes');
         $template = json_decode(JSONForms::orderTemplate($selecao->template), true);
@@ -353,7 +354,7 @@ class SelecaoController extends Controller
 
     public function storeTemplateValue(Request $request, Selecao $selecao, string $field)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $request->validate([
             'value.*.label' => 'required',
@@ -398,7 +399,7 @@ class SelecaoController extends Controller
      */
     public function storeNiveisLinhasPesquisa(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $request->validate([
             'id' => 'required|array',
@@ -431,7 +432,7 @@ class SelecaoController extends Controller
      */
     public function destroyNivelLinhaPesquisa(Request $request, Selecao $selecao, NivelLinhaPesquisa $nivellinhapesquisa)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         // transaction para não ter problema de inconsistência do DB
         $db_transaction = DB::transaction(function () use ($selecao, $nivellinhapesquisa) {
@@ -452,7 +453,7 @@ class SelecaoController extends Controller
      */
     public function storeDisciplina(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $request->validate([
             'id' => 'required',
@@ -487,7 +488,7 @@ class SelecaoController extends Controller
      */
     public function destroyDisciplina(Request $request, Selecao $selecao, Disciplina $disciplina)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         // transaction para não ter problema de inconsistência do DB
         $db_transaction = DB::transaction(function () use ($selecao, $disciplina) {
@@ -508,7 +509,7 @@ class SelecaoController extends Controller
      */
     public function storeMotivoIsencaoTaxa(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $request->validate([
             'id' => 'required',
@@ -543,7 +544,7 @@ class SelecaoController extends Controller
      */
     public function destroyMotivoIsencaoTaxa(Request $request, Selecao $selecao, MotivoIsencaoTaxa $motivoisencaotaxa)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $selecao->motivosisencaotaxa()->detach($motivoisencaotaxa);
 
@@ -559,7 +560,7 @@ class SelecaoController extends Controller
      */
     public function storeTipoArquivoSolicitacaoIsencaoTaxa(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $request->validate([
             'id' => 'required',
@@ -594,7 +595,7 @@ class SelecaoController extends Controller
      */
     public function destroyTipoArquivoSolicitacaoIsencaoTaxa(Request $request, Selecao $selecao, TipoArquivo $tipoarquivo)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $selecao->tiposarquivo()->detach($tipoarquivo);
 
@@ -610,7 +611,7 @@ class SelecaoController extends Controller
      */
     public function storeTipoArquivoInscricao(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $request->validate([
             'id' => 'required',
@@ -645,7 +646,7 @@ class SelecaoController extends Controller
      */
     public function destroyTipoArquivoInscricao(Request $request, Selecao $selecao, TipoArquivo $tipoarquivo)
     {
-        $this->authorize('selecoes.update', $selecao);
+        Gate::authorize('selecoes.update', $selecao);
 
         $selecao->tiposarquivo()->detach($tipoarquivo);
 
@@ -663,7 +664,7 @@ class SelecaoController extends Controller
      */
     public function downloadSolicitacoesIsencaoTaxa(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.view', $selecao);
+        Gate::authorize('selecoes.view', $selecao);
         $request->validate([
             'ano' => 'required|integer|min:2000|max:' . (date('Y') + 1),
         ]);
@@ -710,7 +711,7 @@ class SelecaoController extends Controller
      */
     public function downloadInscricoes(Request $request, Selecao $selecao)
     {
-        $this->authorize('selecoes.view', $selecao);
+        Gate::authorize('selecoes.view', $selecao);
         $request->validate([
             'ano' => 'required|integer|min:2000|max:' . (date('Y') + 1),
         ]);

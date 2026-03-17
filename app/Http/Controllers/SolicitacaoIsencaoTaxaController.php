@@ -17,6 +17,7 @@ use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
@@ -54,7 +55,7 @@ class SolicitacaoIsencaoTaxaController extends Controller
     public function index(Request $request)
     {
         $perfil_admin_ou_gerente_ou_docente =  in_array(session('perfil'), ['admin', 'gerente', 'docente']);
-        $this->authorize('solicitacoesisencaotaxa.view' . ($perfil_admin_ou_gerente_ou_docente ? 'Any' : 'Their'));
+        Gate::authorize('solicitacoesisencaotaxa.view' . ($perfil_admin_ou_gerente_ou_docente ? 'Any' : 'Their'));
 
         \UspTheme::activeUrl('solicitacoesisencaotaxa');
         return view('solicitacoesisencaotaxa.index', $this->monta_compact_index());
@@ -69,7 +70,7 @@ class SolicitacaoIsencaoTaxaController extends Controller
      */
     public function listaSelecoesParaSolicitacaoIsencaoTaxa(Request $request)
     {
-        $this->authorize('solicitacoesisencaotaxa.create');
+        Gate::authorize('solicitacoesisencaotaxa.create');
 
         $request->validate(['filtro' => 'nullable|string']);
 
@@ -87,7 +88,7 @@ class SolicitacaoIsencaoTaxaController extends Controller
      */
     public function create(Selecao $selecao)
     {
-        $this->authorize('solicitacoesisencaotaxa.create', $selecao);
+        Gate::authorize('solicitacoesisencaotaxa.create', $selecao);
 
         $solicitacaoisencaotaxa = new SolicitacaoIsencaoTaxa;
         $solicitacaoisencaotaxa->selecao = $selecao;
@@ -111,7 +112,7 @@ class SolicitacaoIsencaoTaxaController extends Controller
     public function store(Request $request)
     {
         $selecao = Selecao::find($request->selecao_id);
-        $this->authorize('solicitacoesisencaotaxa.create', $selecao);
+        Gate::authorize('solicitacoesisencaotaxa.create', $selecao);
 
         $user = \Auth::user();
 
@@ -149,7 +150,7 @@ class SolicitacaoIsencaoTaxaController extends Controller
      */
     public function edit(Request $request, SolicitacaoIsencaoTaxa $solicitacaoisencaotaxa)
     {
-        $this->authorize('solicitacoesisencaotaxa.view', $solicitacaoisencaotaxa);    // este 1o passo da edição é somente um show, não chega a haver um update
+        Gate::authorize('solicitacoesisencaotaxa.view', $solicitacaoisencaotaxa);    // este 1o passo da edição é somente um show, não chega a haver um update
 
         \UspTheme::activeUrl('solicitacoesisencaotaxa');
         $solicitacaoisencaotaxa->selecao->atualizarStatus();
@@ -166,7 +167,7 @@ class SolicitacaoIsencaoTaxaController extends Controller
     public function update(Request $request, SolicitacaoIsencaoTaxa $solicitacaoisencaotaxa)
     {
         if ($request->input('acao', null) == 'envio') {
-            $this->authorize('solicitacoesisencaotaxa.update', $solicitacaoisencaotaxa);
+            Gate::authorize('solicitacoesisencaotaxa.update', $solicitacaoisencaotaxa);
 
             if ($solicitacaoisencaotaxa->todosArquivosRequeridosPresentes()) {
 
@@ -185,7 +186,7 @@ class SolicitacaoIsencaoTaxaController extends Controller
         }
 
         if ($request->conjunto_alterado == 'estado') {
-            $this->authorize('solicitacoesisencaotaxa.updateStatus', $solicitacaoisencaotaxa);
+            Gate::authorize('solicitacoesisencaotaxa.updateStatus', $solicitacaoisencaotaxa);
 
             // transaction para não ter problema de inconsistência do DB
             $solicitacaoisencaotaxa = DB::transaction(function () use ($request, $solicitacaoisencaotaxa) {
@@ -199,7 +200,7 @@ class SolicitacaoIsencaoTaxaController extends Controller
             $request->session()->flash('alert-success', 'Estado da solicitação de isenção de taxa alterado com sucesso');
 
         } else {
-            $this->authorize('solicitacoesisencaotaxa.update', $solicitacaoisencaotaxa);
+            Gate::authorize('solicitacoesisencaotaxa.update', $solicitacaoisencaotaxa);
 
             $solicitacaoisencaotaxa->extras = json_encode($request->extras);
             $solicitacaoisencaotaxa->save();

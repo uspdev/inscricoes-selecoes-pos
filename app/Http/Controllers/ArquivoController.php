@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -53,7 +54,7 @@ class ArquivoController extends Controller
             $classe_nome = 'SolicitacaoIsencaoTaxa';
         else
             $classe_nome = 'Inscricao';
-        $this->authorize('arquivos.view', [$arquivo, $classe_nome]);
+        Gate::authorize('arquivos.view', [$arquivo, $classe_nome]);
 
         while (ob_get_level() > 0)    // este while é para não estourar erro quando usando docker
             ob_end_clean();           // https://stackoverflow.com/questions/39329299/laravel-file-downloaded-from-storage-folder-gets-corrupted
@@ -87,7 +88,7 @@ class ArquivoController extends Controller
             \UspTheme::activeUrl($classe_nome_plural);
             return view($classe_nome_plural . '.edit', array_merge($this->monta_compact($objeto, $classe_nome, $classe_nome_plural, $form, 'edit'), ['errors' => $validator->errors()]));
         }
-        $this->authorize('arquivos.create', [$objeto, $classe_nome]);
+        Gate::authorize('arquivos.create', [$objeto, $classe_nome]);
 
         // transaction para não ter problema de inconsistência do DB
         $db_transaction = DB::transaction(function () use ($request, $classe_nome, $classe_nome_plural, $classe_nome_plural_acentuado, $classe_nome_abreviada, $objeto, $tipoarquivo) {
@@ -146,7 +147,7 @@ class ArquivoController extends Controller
         $segmento_rota = ($classe_nome === 'Inscricao' && $objeto->selecao->isMatricula()) ? 'matriculas' : $classe_nome_plural;
         $form = $this->obterForm($classe_nome, $objeto);
 
-        $this->authorize('arquivos.delete', [$arquivo, $objeto, $classe_nome]);
+        Gate::authorize('arquivos.delete', [$arquivo, $objeto, $classe_nome]);
 
         if (Storage::exists($arquivo->caminho))
             Storage::delete($arquivo->caminho);
@@ -180,7 +181,7 @@ class ArquivoController extends Controller
     public function zipTodosDoObjeto(string $classe_nome, int $objeto_id)
     {
         $objeto = $this->obterClasse($classe_nome)::findOrFail($objeto_id);
-        $this->authorize('viewAny', [$objeto, $classe_nome]);
+        Gate::authorize('viewAny', [$objeto, $classe_nome]);
 
         $zip_name = $this->obterClasseNomeAbreviada($classe_nome, ($classe_nome == 'Inscricao' ? $objeto->selecao : null)) . $objeto->id . '_' . formatarDataHoraAtualComMilissegundos() . '.zip';
         return $this->zip($objeto->arquivos, $zip_name);
@@ -197,7 +198,7 @@ class ArquivoController extends Controller
     public function downloadTodosDoObjeto(string $classe_nome, int $objeto_id, Request $request)
     {
         $objeto = $this->obterClasse($classe_nome)::findOrFail($objeto_id);
-        $this->authorize('viewAny', [$objeto, $classe_nome]);
+        Gate::authorize('viewAny', [$objeto, $classe_nome]);
 
         return $this->downloadZip($request->query('zip_name'));
     }
@@ -211,7 +212,7 @@ class ArquivoController extends Controller
      */
     public function zipTodosDosObjetosDaSelecao(string $classe_nome, Selecao $selecao)
     {
-        $this->authorize('selecoes.view', $selecao);
+        Gate::authorize('selecoes.view', $selecao);
 
         $zip_name = $this->obterClasseNomeAbreviada('Selecao') . $selecao->id . '_' . $this->obterClasseNomeAbreviadaPlural($classe_nome, $selecao) . '_' . formatarDataHoraAtualComMilissegundos() . '.zip';
         $arquivos = collect();
@@ -235,7 +236,7 @@ class ArquivoController extends Controller
      */
     public function downloadTodosDosObjetosDaSelecao(string $classe_nome, Selecao $selecao, Request $request)
     {
-        $this->authorize('selecoes.view', $selecao);
+        Gate::authorize('selecoes.view', $selecao);
 
         return $this->downloadZip($request->query('zip_name'));
     }

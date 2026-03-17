@@ -38,7 +38,7 @@
         "lucascudo/laravel-pt-br-localization": "^1.2",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^8.8",
-        "phpunit/phpunit": "^11.5.15",
+        "phpunit/phpunit": "^11.5.50",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {

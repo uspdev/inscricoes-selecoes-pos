@@ -20,7 +20,7 @@ class LimpezaDadosController extends Controller
 
     public function showForm()
     {
-        $this->authorize('limpezadados.showForm');
+        Gate::authorize('limpezadados.showForm');
 
         \UspTheme::activeUrl('limpezadados');
         return view('limpezadados.form');
@@ -28,7 +28,7 @@ class LimpezaDadosController extends Controller
 
     public function run(LimpezaDadosRequest $request)
     {
-        $this->authorize('limpezadados.run');
+        Gate::authorize('limpezadados.run');
 
         $validator = Validator::make($request->all(), LimpezaDadosRequest::rules, LimpezaDadosRequest::messages);
         if ($validator->fails())

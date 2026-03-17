@@ -39,7 +39,7 @@ class LinhaPesquisaController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('linhaspesquisa.viewAny');
+        Gate::authorize('linhaspesquisa.viewAny');
 
         \UspTheme::activeUrl('linhaspesquisa');
         if (!$request->ajax())
@@ -53,7 +53,7 @@ class LinhaPesquisaController extends Controller
      */
     public function create()
     {
-        $this->authorize('linhaspesquisa.create');
+        Gate::authorize('linhaspesquisa.create');
 
         \UspTheme::activeUrl('linhaspesquisa');
         return view('linhaspesquisa.edit', $this->monta_compact(new LinhaPesquisa, 'create'));
@@ -67,7 +67,7 @@ class LinhaPesquisaController extends Controller
      */
     public function store(LinhaPesquisaRequest $request)
     {
-        $this->authorize('linhaspesquisa.create');
+        Gate::authorize('linhaspesquisa.create');
 
         $validator = Validator::make($request->all(), LinhaPesquisaRequest::rules, LinhaPesquisaRequest::messages);
         if ($validator->fails()) {
@@ -97,7 +97,7 @@ class LinhaPesquisaController extends Controller
      */
     public function edit(Request $request, LinhaPesquisa $linhapesquisa)
     {
-        $this->authorize('linhaspesquisa.update', $linhapesquisa);
+        Gate::authorize('linhaspesquisa.update', $linhapesquisa);
 
         \UspTheme::activeUrl('linhaspesquisa');
         return view('linhaspesquisa.edit', $this->monta_compact($linhapesquisa, 'edit'));
@@ -112,7 +112,7 @@ class LinhaPesquisaController extends Controller
      */
     public function update(LinhaPesquisaRequest $request, LinhaPesquisa $linhapesquisa)
     {
-        $this->authorize('linhaspesquisa.update', $linhapesquisa);
+        Gate::authorize('linhaspesquisa.update', $linhapesquisa);
 
         $validator = Validator::make($request->all(), LinhaPesquisaRequest::rules, LinhaPesquisaRequest::messages);
         if ($validator->fails()) {
@@ -139,7 +139,7 @@ class LinhaPesquisaController extends Controller
     public function destroy(LinhaPesquisaRequest $request, string $id)
     {
         $linhapesquisa = LinhaPesquisa::find((int) $id);
-        $this->authorize('linhaspesquisa.delete', $linhapesquisa);
+        Gate::authorize('linhaspesquisa.delete', $linhapesquisa);
 
         if ($linhapesquisa->selecoes()->exists())
             $request->session()->flash('alert-danger', 'Há seleções para esta linha de pesquisa/tema!');
@@ -164,7 +164,7 @@ class LinhaPesquisaController extends Controller
      */
     public function storeOrientador(Request $request, LinhaPesquisa $linhapesquisa)
     {
-        $this->authorize('linhaspesquisa.update', $linhapesquisa);
+        Gate::authorize('linhaspesquisa.update', $linhapesquisa);
 
         if ($request->externo)
             $request->validate([
@@ -224,7 +224,7 @@ class LinhaPesquisaController extends Controller
      */
     public function destroyOrientador(Request $request, LinhaPesquisa $linhapesquisa, Orientador $orientador)
     {
-        $this->authorize('linhaspesquisa.update', $linhapesquisa);
+        Gate::authorize('linhaspesquisa.update', $linhapesquisa);
 
         $linhapesquisa->orientadores()->detach($orientador);
 

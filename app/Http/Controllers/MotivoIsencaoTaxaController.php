@@ -25,7 +25,7 @@ class MotivoIsencaoTaxaController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('motivosisencaotaxa.viewAny');
+        Gate::authorize('motivosisencaotaxa.viewAny');
 
         \UspTheme::activeUrl('motivosisencaotaxa');
         if (!$request->ajax())
@@ -41,7 +41,7 @@ class MotivoIsencaoTaxaController extends Controller
      */
     public function show(Request $request, string $id)
     {
-        $this->authorize('motivosisencaotaxa.view');
+        Gate::authorize('motivosisencaotaxa.view');
 
         \UspTheme::activeUrl('motivosisencaotaxa');
         if ($request->ajax())
@@ -56,7 +56,7 @@ class MotivoIsencaoTaxaController extends Controller
      */
     public function store(MotivoIsencaoTaxaRequest $request)
     {
-        $this->authorize('motivosisencaotaxa.create');
+        Gate::authorize('motivosisencaotaxa.create');
 
         $validator = Validator::make($request->all(), MotivoIsencaoTaxaRequest::rules, MotivoIsencaoTaxaRequest::messages);
         if ($validator->fails())
@@ -78,7 +78,7 @@ class MotivoIsencaoTaxaController extends Controller
      */
     public function update(MotivoIsencaoTaxaRequest $request, string $id)
     {
-        $this->authorize('motivosisencaotaxa.update');
+        Gate::authorize('motivosisencaotaxa.update');
 
         $validator = Validator::make($request->all(), MotivoIsencaoTaxaRequest::rules, MotivoIsencaoTaxaRequest::messages);
         if ($validator->fails())
@@ -102,7 +102,7 @@ class MotivoIsencaoTaxaController extends Controller
      */
     public function destroy(MotivoIsencaoTaxaRequest $request, string $id)
     {
-        $this->authorize('motivosisencaotaxa.delete');
+        Gate::authorize('motivosisencaotaxa.delete');
 
         $motivoisencaotaxa = MotivoIsencaoTaxa::find((int) $id);
         if ($motivoisencaotaxa->selecoes()->exists())

@@ -39,7 +39,7 @@ class TipoArquivoController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('tiposarquivo.viewAny');
+        Gate::authorize('tiposarquivo.viewAny');
 
         \UspTheme::activeUrl('tiposarquivo');
         if (!$request->ajax())
@@ -53,7 +53,7 @@ class TipoArquivoController extends Controller
      */
     public function create()
     {
-        $this->authorize('tiposarquivo.create');
+        Gate::authorize('tiposarquivo.create');
 
         \UspTheme::activeUrl('tiposarquivo');
         return view('tiposarquivo.edit', $this->monta_compact(new TipoArquivo, 'create'));
@@ -67,7 +67,7 @@ class TipoArquivoController extends Controller
      */
     public function store(TipoArquivoRequest $request)
     {
-        $this->authorize('tiposarquivo.create');
+        Gate::authorize('tiposarquivo.create');
 
         $validator = Validator::make($request->all(), TipoArquivoRequest::rules, TipoArquivoRequest::messages);
         if ($validator->fails()) {
@@ -107,7 +107,7 @@ class TipoArquivoController extends Controller
      */
     public function edit(Request $request, TipoArquivo $tipoarquivo)
     {
-        $this->authorize('tiposarquivo.update');
+        Gate::authorize('tiposarquivo.update');
 
         \UspTheme::activeUrl('tiposarquivo');
         return view('tiposarquivo.edit', $this->monta_compact($tipoarquivo, 'edit'));
@@ -122,7 +122,7 @@ class TipoArquivoController extends Controller
      */
     public function update(TipoArquivoRequest $request, TipoArquivo $tipoarquivo)
     {
-        $this->authorize('tiposarquivo.update');
+        Gate::authorize('tiposarquivo.update');
 
         $validator = Validator::make($request->all(), TipoArquivoRequest::rules, TipoArquivoRequest::messages);
         if ($validator->fails()) {
@@ -153,7 +153,7 @@ class TipoArquivoController extends Controller
      */
     public function destroy(TipoArquivoRequest $request, string $id)
     {
-        $this->authorize('tiposarquivo.delete');
+        Gate::authorize('tiposarquivo.delete');
 
         $tipoarquivo = TipoArquivo::find((int) $id);
         if ($tipoarquivo->selecoes()->exists())
@@ -179,7 +179,7 @@ class TipoArquivoController extends Controller
      */
     public function storeCategoria(Request $request, TipoArquivo $tipoarquivo)
     {
-        $this->authorize('tiposarquivo.update', $tipoarquivo);
+        Gate::authorize('tiposarquivo.update', $tipoarquivo);
 
         $request->validate([
             'id' => 'required',
@@ -214,7 +214,7 @@ class TipoArquivoController extends Controller
      */
     public function destroyCategoria(Request $request, TipoArquivo $tipoarquivo, Categoria $categoria)
     {
-        $this->authorize('tiposarquivo.update', $tipoarquivo);
+        Gate::authorize('tiposarquivo.update', $tipoarquivo);
 
         $tipoarquivo->categorias()->detach($categoria);
 
@@ -230,7 +230,7 @@ class TipoArquivoController extends Controller
      */
     public function storeNivelPrograma(Request $request, TipoArquivo $tipoarquivo)
     {
-        $this->authorize('tiposarquivo.update', $tipoarquivo);
+        Gate::authorize('tiposarquivo.update', $tipoarquivo);
 
         $request->validate([
             'id' => 'required',
@@ -265,7 +265,7 @@ class TipoArquivoController extends Controller
      */
     public function destroyNivelPrograma(Request $request, TipoArquivo $tipoarquivo, NivelPrograma $nivelprograma)
     {
-        $this->authorize('tiposarquivo.update', $tipoarquivo);
+        Gate::authorize('tiposarquivo.update', $tipoarquivo);
 
         $tipoarquivo->niveisprogramas()->detach($nivelprograma);
 

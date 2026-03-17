@@ -26,6 +26,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -71,9 +72,9 @@ class InscricaoController extends Controller
     public function index(Request $request)
     {
         if (in_array(session('perfil'), ['admin', 'gerente', 'docente']))
-            $this->authorize('inscricoes.viewAny');
+            Gate::authorize('inscricoes.viewAny');
         else
-            $this->authorize('inscricoes.viewTheir');
+            Gate::authorize('inscricoes.viewTheir');
 
         \UspTheme::activeUrl(request()->segment(1));
         return view('inscricoes.index', $this->monta_compact_index());
@@ -88,7 +89,7 @@ class InscricaoController extends Controller
      */
     public function listaSelecoesParaNovaInscricao(Request $request)
     {
-        $this->authorize('inscricoes.create');
+        Gate::authorize('inscricoes.create');
 
         $request->validate(['filtro' => 'nullable|string']);
 
@@ -108,7 +109,7 @@ class InscricaoController extends Controller
     public function create(Selecao $selecao, ?Nivel $nivel = null)
     {
         $this->validaRotaInscricaoOuMatricula($selecao);
-        $this->authorize('inscricoes.create', $selecao);
+        Gate::authorize('inscricoes.create', $selecao);
 
         $inscricao = new Inscricao;
         $inscricao->selecao = $selecao;
@@ -149,7 +150,7 @@ class InscricaoController extends Controller
     {
         $selecao = Selecao::find($request->selecao_id);
         $this->validaRotaInscricaoOuMatricula($selecao);
-        $this->authorize('inscricoes.create', $selecao);
+        Gate::authorize('inscricoes.create', $selecao);
 
         $user = \Auth::user();
 
@@ -187,7 +188,7 @@ class InscricaoController extends Controller
     public function edit(Request $request, Inscricao $inscricao)
     {
         $this->validaRotaInscricaoOuMatricula($inscricao->selecao);
-        $this->authorize('inscricoes.view', $inscricao);    // este 1o passo da edição é somente um show, não chega a haver um update
+        Gate::authorize('inscricoes.view', $inscricao);    // este 1o passo da edição é somente um show, não chega a haver um update
 
         \UspTheme::activeUrl(request()->segment(1));
         $inscricao->selecao->atualizarStatus();
@@ -207,7 +208,7 @@ class InscricaoController extends Controller
         \UspTheme::activeUrl(request()->segment(1));
 
         if ($request->input('acao', null) == 'envio') {
-            $this->authorize('inscricoes.update', $inscricao);
+            Gate::authorize('inscricoes.update', $inscricao);
 
             $extras = json_decode(stripslashes($inscricao->extras), true);
             if ($inscricao->todosArquivosRequeridosPresentes($extras['nivel'] ?? null)) {
@@ -239,7 +240,7 @@ class InscricaoController extends Controller
         }
 
         if ($request->conjunto_alterado == 'estado') {
-            $this->authorize('inscricoes.updateStatus', $inscricao);
+            Gate::authorize('inscricoes.updateStatus', $inscricao);
 
             $inscricao->estado = $request->estado;
             $inscricao->save();
@@ -247,7 +248,7 @@ class InscricaoController extends Controller
             $request->session()->flash('alert-success', 'Estado da ' . Nomenclatura::InscricaoOuMatricula() . ' alterado com sucesso');
 
         } else {
-            $this->authorize('inscricoes.update', $inscricao);
+            Gate::authorize('inscricoes.update', $inscricao);
 
             $extras = json_decode($inscricao->extras, true);
             if (isset($extras['disciplinas']))
@@ -269,7 +270,7 @@ class InscricaoController extends Controller
     public function storeDisciplina(Request $request, Inscricao $inscricao)
     {
         $this->validaRotaInscricaoOuMatricula($inscricao->selecao);
-        $this->authorize('inscricoes.update', $inscricao);
+        Gate::authorize('inscricoes.update', $inscricao);
 
         $request->validate([
             'id' => 'required',
@@ -318,7 +319,7 @@ class InscricaoController extends Controller
     public function destroyDisciplina(Request $request, Inscricao $inscricao, Disciplina $disciplina)
     {
         $this->validaRotaInscricaoOuMatricula($inscricao->selecao);
-        $this->authorize('inscricoes.update', $inscricao);
+        Gate::authorize('inscricoes.update', $inscricao);
 
         $info_adicional = '';
 

@@ -25,7 +25,7 @@ class CategoriaController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('categorias.viewAny');
+        Gate::authorize('categorias.viewAny');
 
         \UspTheme::activeUrl('categorias');
         if (!$request->ajax())
@@ -41,7 +41,7 @@ class CategoriaController extends Controller
      */
     public function show(Request $request, string $id)
     {
-        $this->authorize('categorias.viewAny');
+        Gate::authorize('categorias.viewAny');
 
         \UspTheme::activeUrl('categorias');
         if ($request->ajax())
@@ -56,7 +56,7 @@ class CategoriaController extends Controller
      */
     public function store(CategoriaRequest $request)
     {
-        $this->authorize('categorias.create');
+        Gate::authorize('categorias.create');
 
         $validator = Validator::make($request->all(), CategoriaRequest::rules, CategoriaRequest::messages);
         if ($validator->fails())
@@ -78,7 +78,7 @@ class CategoriaController extends Controller
      */
     public function update(CategoriaRequest $request, string $id)
     {
-        $this->authorize('categorias.update');
+        Gate::authorize('categorias.update');
 
         $validator = Validator::make($request->all(), CategoriaRequest::rules, CategoriaRequest::messages);
         if ($validator->fails())
@@ -102,7 +102,7 @@ class CategoriaController extends Controller
      */
     public function destroy(CategoriaRequest $request, string $id)
     {
-        $this->authorize('categorias.delete');
+        Gate::authorize('categorias.delete');
 
         $categoria = Categoria::find((int) $id);
         if ($categoria->selecoes()->exists())

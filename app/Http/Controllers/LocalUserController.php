@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Services\RecaptchaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
@@ -204,7 +205,7 @@ class LocalUserController extends Controller
 
     public function adminConfirmaEmail(User $localuser)
     {
-        $this->authorize('localusers.adminConfirmEmail');
+        Gate::authorize('localusers.adminConfirmEmail');
 
         // transaction para não ter problema de inconsistência do DB
         DB::transaction(function () use ($localuser) {
@@ -282,7 +283,7 @@ class LocalUserController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('localusers.viewAny');
+        Gate::authorize('localusers.viewAny');
         \UspTheme::activeUrl('localusers');
 
         $localusers = User::where('local', '1')->get();
@@ -312,7 +313,7 @@ class LocalUserController extends Controller
      */
     public function show(Request $request, string $id)
     {
-        $this->authorize('localusers.view');
+        Gate::authorize('localusers.view');
         \UspTheme::activeUrl('localusers');
 
         if ($request->ajax())
@@ -326,7 +327,7 @@ class LocalUserController extends Controller
      */
     public function create()
     {
-        $this->authorize('localusers.create');
+        Gate::authorize('localusers.create');
 
         return view('localusers.create', $this->monta_compact('create'));
     }
@@ -340,7 +341,7 @@ class LocalUserController extends Controller
      */
     public function store(LocalUserRequest $request, RecaptchaService $recaptcha_service)    // este método é invocado tanto pelo candidato, ao se cadastrar, quanto pelo admin, ao cadastrar um localuser no menu de Administração
     {
-        $this->authorize('localusers.create');
+        Gate::authorize('localusers.create');
 
         // para as validações, começa sempre com o reCAPTCHA... depois valida cada campo na ordem em que aparecem na tela
 
@@ -420,7 +421,7 @@ class LocalUserController extends Controller
      */
     public function update(Request $request, User $localuser)
     {
-        $this->authorize('localusers.update');
+        Gate::authorize('localusers.update');
 
         $validator = Validator::make($request->all(), LocalUserRequest::rules, LocalUserRequest::messages);
         if ($validator->fails())
@@ -447,7 +448,7 @@ class LocalUserController extends Controller
      */
     public function destroy(User $localuser)
     {
-        $this->authorize('localusers.delete');
+        Gate::authorize('localusers.delete');
 
         if ($localuser->local == false) {
             request()->session()->flash('alert-danger', 'Usuário senha única não pode ser apagado.');

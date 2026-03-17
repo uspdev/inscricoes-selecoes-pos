@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        $this->authorize('perfiladmin');
+        Gate::authorize('perfiladmin');
         \UspTheme::activeUrl('admin');
 
         $file_upload_max_size = self::file_upload_max_size();
@@ -27,7 +28,7 @@ class AdminController extends Controller
 
     public function getOauthFile($filename)
     {
-        $this->authorize('perfiladmin');
+        Gate::authorize('perfiladmin');
         return Storage::get('debug/oauth/'.$filename);
     }
 

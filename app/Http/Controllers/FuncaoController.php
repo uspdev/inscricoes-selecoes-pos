@@ -25,7 +25,7 @@ class FuncaoController extends Controller
      */
     public function edit()
     {
-        $this->authorize('funcoes.update');
+        Gate::authorize('funcoes.update');
 
         \UspTheme::activeUrl('funcoes');
         return view('funcoes.edit', $this->monta_compact());

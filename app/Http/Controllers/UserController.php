@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
@@ -23,7 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $this->authorize('users.viewAny');
+        Gate::authorize('users.viewAny');
 
         \UspTheme::activeUrl('senhaunica-users');
         $users = User::all();
@@ -38,7 +39,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->authorize('users.view', $user);
+        Gate::authorize('users.view', $user);
         \UspTheme::activeUrl('senhaunica-users');
 
         $oauth_file = 'debug/oauth/' . $user->codpes . '.json';
@@ -59,7 +60,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $this->authorize('users.create');
+        Gate::authorize('users.create');
         return view('users.create');
     }
 
@@ -71,7 +72,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('users.create');
+        Gate::authorize('users.create');
 
         User::obterOuCriarPorCodpes($request->codpes);
         $request->session()->flash('alert-success', 'Gerente/docente adicionado com sucesso');
@@ -97,7 +98,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->authorize('users.update');
+        Gate::authorize('users.update');
 
         $user = \Auth::user();
         $requests = $request->all();
@@ -127,7 +128,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request, string $id)
     {
-        $this->authorize('users.delete');
+        Gate::authorize('users.delete');
 
         $user = User::find((int) $id);
         $user->delete();
@@ -140,7 +141,7 @@ class UserController extends Controller
      */
     public function partenome(Request $request)
     {
-        $this->authorize('users.viewAny');
+        Gate::authorize('users.viewAny');
         if ($request->term) {
             $results = [];
             if (config('inscricoes-selecoes-pos.usar_replicado')) {
@@ -181,7 +182,7 @@ class UserController extends Controller
      */
     public function codpes(Request $request)
     {
-        $this->authorize('usuario');
+        Gate::authorize('usuario');
         if ($request->term) {
             $results = [];
             if (config('inscricoes-selecoes-pos.usar_replicado')) {
@@ -222,7 +223,7 @@ class UserController extends Controller
      */
     public function trocarPerfil(Request $request, string $perfil)
     {
-        $this->authorize('trocarPerfil');
+        Gate::authorize('trocarPerfil');
         $ret = Auth::user()->trocarPerfil($perfil);
         if ($ret['success']) {
             session(['perfil' => $perfil]);
@@ -236,7 +237,7 @@ class UserController extends Controller
      */
     public function assumir(User $user)
     {
-        $this->authorize('admin');
+        Gate::authorize('admin');
 
         session(['adminCodpes' => \Auth::user()->codpes]);
         \Auth::login($user, true);
@@ -250,7 +251,7 @@ class UserController extends Controller
      */
     public function desassumir()
     {
-        $this->authorize('desassumir');
+        Gate::authorize('desassumir');
 
         $user = User::obterPorCodpes(session('adminCodpes'));
         session(['adminCodpes' => 0]);

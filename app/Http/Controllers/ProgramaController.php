@@ -27,7 +27,7 @@ class ProgramaController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('programas.viewAny');
+        Gate::authorize('programas.viewAny');
 
         \UspTheme::activeUrl('programas');
         if (!$request->ajax())
@@ -43,7 +43,7 @@ class ProgramaController extends Controller
      */
     public function show(Request $request, string $id)
     {
-        $this->authorize('programas.view', Programa::where('id', $id)->first());
+        Gate::authorize('programas.view', Programa::where('id', $id)->first());
 
         \UspTheme::activeUrl('programas');
         if ($request->ajax())
@@ -58,7 +58,7 @@ class ProgramaController extends Controller
      */
     public function store(ProgramaRequest $request)
     {
-        $this->authorize('programas.create');
+        Gate::authorize('programas.create');
 
         $validator = Validator::make($request->all(), ProgramaRequest::rules, ProgramaRequest::messages);
         if ($validator->fails())
@@ -87,7 +87,7 @@ class ProgramaController extends Controller
      */
     public function update(ProgramaRequest $request, string $id)
     {
-        $this->authorize('programas.update');
+        Gate::authorize('programas.update');
 
         $validator = Validator::make($request->all(), ProgramaRequest::rules, ProgramaRequest::messages);
         if ($validator->fails())
@@ -113,7 +113,7 @@ class ProgramaController extends Controller
      */
     public function destroy(ProgramaRequest $request, string $id)
     {
-        $this->authorize('programas.delete');
+        Gate::authorize('programas.delete');
 
         $programa = Programa::find((int) $id);
         if ($programa->selecoes()->exists())
