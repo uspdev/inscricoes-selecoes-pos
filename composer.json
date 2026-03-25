@@ -26,6 +26,7 @@
         "spatie/laravel-html": "^3.11",
         "spatie/simple-excel": "^3.7",
         "uspdev/boleto": "^1.0",
+        "uspdev/cadastros-auxiliares-client": "^1.0",
         "uspdev/laravel-replicado": "^1.0",
         "uspdev/laravel-tools": "^1.2",
         "uspdev/laravel-usp-theme": "^2.7",
@@ -56,6 +57,12 @@
             "Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/uspdev/cadastros-auxiliares-client"
+        }
+    ],
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
