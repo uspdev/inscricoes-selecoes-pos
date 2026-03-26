@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eeaf1db9ea4dab149a3d890b8e8c9890",
+    "content-hash": "31592465b0287a8d44310a45630cd9bd",
     "packages": [
         {
             "name": "brick/math",
@@ -7711,16 +7711,16 @@
         },
         {
             "name": "uspdev/cadastros-auxiliares-client",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/cadastros-auxiliares-client.git",
-                "reference": "666dbf67e2321d049e557372666e36ab77aafa87"
+                "reference": "d0c8d057b73cb48ff483c24982996a7d201ceeaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/cadastros-auxiliares-client/zipball/666dbf67e2321d049e557372666e36ab77aafa87",
-                "reference": "666dbf67e2321d049e557372666e36ab77aafa87",
+                "url": "https://api.github.com/repos/uspdev/cadastros-auxiliares-client/zipball/d0c8d057b73cb48ff483c24982996a7d201ceeaa",
+                "reference": "d0c8d057b73cb48ff483c24982996a7d201ceeaa",
                 "shasum": ""
             },
             "require": {
@@ -7747,10 +7747,10 @@
             ],
             "description": "Laravel client for cadastros-auxiliares webservice endpoints",
             "support": {
-                "source": "https://github.com/uspdev/cadastros-auxiliares-client/tree/1.0.1",
+                "source": "https://github.com/uspdev/cadastros-auxiliares-client/tree/1.0.2",
                 "issues": "https://github.com/uspdev/cadastros-auxiliares-client/issues"
             },
-            "time": "2026-03-10T18:55:55+00:00"
+            "time": "2026-03-25T19:47:58+00:00"
         },
         {
             "name": "uspdev/laravel-replicado",
@@ -7854,20 +7854,20 @@
         },
         {
             "name": "uspdev/laravel-usp-theme",
-            "version": "2.8.25",
+            "version": "2.8.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/laravel-usp-theme.git",
-                "reference": "44b066f9b57012563852bd06e82558c5fa8cd8dc"
+                "reference": "81369cf28bd1cb85178f9c6b4f2a5d57a544471b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/laravel-usp-theme/zipball/44b066f9b57012563852bd06e82558c5fa8cd8dc",
-                "reference": "44b066f9b57012563852bd06e82558c5fa8cd8dc",
+                "url": "https://api.github.com/repos/uspdev/laravel-usp-theme/zipball/81369cf28bd1cb85178f9c6b4f2a5d57a544471b",
+                "reference": "81369cf28bd1cb85178f9c6b4f2a5d57a544471b",
                 "shasum": ""
             },
             "require": {
-                "uspdev/cadastros-auxiliares-client": "@dev"
+                "uspdev/cadastros-auxiliares-client": "^1.0"
             },
             "type": "library",
             "extra": {
@@ -7901,9 +7901,9 @@
             "description": "usp theme for laravel",
             "support": {
                 "issues": "https://github.com/uspdev/laravel-usp-theme/issues",
-                "source": "https://github.com/uspdev/laravel-usp-theme/tree/2.8.25"
+                "source": "https://github.com/uspdev/laravel-usp-theme/tree/2.8.26"
             },
-            "time": "2026-03-24T16:34:12+00:00"
+            "time": "2026-03-25T19:52:34+00:00"
         },
         {
             "name": "uspdev/replicado",

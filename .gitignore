@@ -22,3 +22,5 @@ Dockerfile.custom
 
 /.ddev
 ai-context.md
+
+backup_projeto.sql.gz
