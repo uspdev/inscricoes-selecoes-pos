@@ -24,4 +24,6 @@ return [
 
     // média em segundos do tempo para download de 1 Gb
     'timeout_por_gb' => (int) env('TIMEOUT_POR_GB', 90),
+
+    'integracao-cadastros-auxiliares' => env('CADASTROS_AUXILIARES_MENSAGENS_INTEGRACAO', false),
 ];
