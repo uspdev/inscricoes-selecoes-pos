@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Uspdev\Replicado\Estrutura;
 
 class Selecao extends Model
 {
@@ -553,13 +554,13 @@ class Selecao extends Model
                 "order": 27
             },
             "declaro_concordo_termos": {
-                "label": "Declaro estar ciente e concordo com os <a href=\"https://www.ip.usp.br/site/pos_graduacao/regimentos-da-comissao-de-pos-graduacao-e-regulamentos-dos-programas/\">termos de inscrição no Programa de Pós-Graduação do Instituto de Psicologia da USP</a>",
+                "label": "Declaro estar ciente e concordo com os <a href=\"https://www.ip.usp.br/site/pos_graduacao/regimentos-da-comissao-de-pos-graduacao-e-regulamentos-dos-programas/\">termos de inscrição no Programa de Pós-Graduação do(a) {{NOME UNIDADE}}</a>",
                 "type": "checkbox",
                 "validate": "required",
                 "order": 28
             },
             "declaro_revisei_inscricao": {
-                "label": "Declaro que revisei todas as informações inseridas neste formulário e que elas estão corretas, e venho requerer minha inscrição como candidato(a) à vaga no Programa de Pós-Graduação no Instituto de Psicologia da USP",
+                "label": "Declaro que revisei todas as informações inseridas neste formulário e que elas estão corretas, e venho requerer minha inscrição como candidato(a) à vaga no Programa de Pós-Graduação no(a) {{NOME UNIDADE}}",
                 "type": "checkbox",
                 "validate": "required",
                 "order": 29
@@ -938,6 +939,27 @@ class Selecao extends Model
     public function contarInscricoesPorMes(int $ano)
     {
         return Inscricao::contarInscricoesPorMes($ano, $this);
+    }
+
+    // função para generalizar o nome da unidade, baseando-se no valor do .env
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->injetarUnidadeNoTemplate();
+    }
+
+    // como o template é protegido, precisamos de um método para inserir o nome da unidade
+    private function injetarUnidadeNoTemplate()
+    {
+        if (empty($this->attributes['template'])) return;
+
+        $unidade = Estrutura::obterUnidade(config('senhaunica.codigoUnidade'))['nomund'] ?? 'Unidade';
+
+        $this->attributes['template'] = str_replace(
+            '{{NOME UNIDADE}}', 
+            $unidade, 
+            $this->attributes['template']
+        );
     }
 
     public function isMatricula()
