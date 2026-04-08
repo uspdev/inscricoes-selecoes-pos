@@ -30,6 +30,9 @@ class EssentialSeeder extends Seeder
             ProgramaSeeder::class,          // adiciona programas
             CategoriaSeeder::class,         // adiciona categorias
             NivelSeeder::class,             // adiciona níveis
+            LinhaPesquisaSeeder::class,     // adiciona linhas de pesquisa/temas
+            DisciplinaSeeder::class,        // adiciona disciplinas
+            FuncaoSeeder::class,            // adiciona os doscentes do programa de pós-graduação
         ]);
     }
 }

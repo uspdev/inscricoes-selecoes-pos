@@ -8,6 +8,7 @@ use App\Models\Selecao;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Uspdev\CadastrosAuxiliaresClient\Contracts\ProgramasClientInterface;
 
 class SelecaoSeeder extends Seeder
 {
@@ -22,7 +23,7 @@ class SelecaoSeeder extends Seeder
         $categoria_id_ALUNOESPECIAL = Categoria::where('nome', 'Aluno Especial')->first()->id;
 
         $programa_id_NEUROCIENCIASECOMPORTAMENTONEC = Programa::where('nome', 'Neurociências e Comportamento (NEC)')->first()->id;
-
+        $programa = app(ProgramasClientInterface::class)->listar()[0];
         // se formos incluir tags com aspas duplas, precisamos usar <a href=\"...\">...</a> ao invés de <a href="...">...</a>
 
         $selecoes = [
