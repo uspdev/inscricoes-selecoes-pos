@@ -554,7 +554,7 @@ class Selecao extends Model
                 "order": 27
             },
             "declaro_concordo_termos": {
-                "label": "Declaro estar ciente e concordo com os <a href=\"https://www.ip.usp.br/site/pos_graduacao/regimentos-da-comissao-de-pos-graduacao-e-regulamentos-dos-programas/\">termos de inscrição no Programa de Pós-Graduação do(a) {{NOME UNIDADE}}</a>",
+                "label": "Declaro estar ciente e concordo com os <a href=\"#\">termos de inscrição no Programa de Pós-Graduação do(a) {{NOME UNIDADE}}</a>",
                 "type": "checkbox",
                 "validate": "required",
                 "order": 28
