@@ -33,9 +33,6 @@ class DatabaseSeeder extends Seeder
             NivelSeeder::class,             // adiciona níveis
             LinhaPesquisaSeeder::class,     // adiciona linhas de pesquisa/temas
             DisciplinaSeeder::class,        // adiciona disciplinas
-            ParametroSeeder::class,         // adiciona parâmetros
-            MotivoIsencaoTaxaSeeder::class, // adiciona motivos de isenção de taxa
-            TipoArquivoSeeder::class,       // adiciona tipos de arquivo
         ]);
     }
 }
