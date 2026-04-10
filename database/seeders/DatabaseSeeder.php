@@ -30,7 +30,6 @@ class DatabaseSeeder extends Seeder
             ProgramaSeeder::class,          // adiciona programas
             CategoriaSeeder::class,         // adiciona categorias
             FuncaoSeeder::class,            // adiciona funções
-            SelecaoSeeder::class,           // adiciona seleções
             NivelSeeder::class,             // adiciona níveis
             LinhaPesquisaSeeder::class,     // adiciona linhas de pesquisa/temas
             DisciplinaSeeder::class,        // adiciona disciplinas
