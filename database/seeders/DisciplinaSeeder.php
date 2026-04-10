@@ -28,11 +28,5 @@ class DisciplinaSeeder extends Seeder
                 );
             }
         }
-        
-
-        // // adiciona registros na tabela selecao_disciplina
-        // $selecao_id_SELECAO2025ALUNOESPECIAL = Selecao::where('nome', 'Seleção 2025 Aluno Especial')->first()->id;
-        // foreach (Disciplina::all() as $disciplina)
-        //     $disciplina->selecoes()->attach($selecao_id_SELECAO2025ALUNOESPECIAL);
     }
 }
