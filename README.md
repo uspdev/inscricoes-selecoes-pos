@@ -226,7 +226,7 @@ Há várias opções que precisam ser ajustadas nesse arquivo. Faça com atenç�
 
 Os setores e respectivos designados podem ser importados do Replicado. Para isso rode:
 
-    php artisan db:seed --class=SetorReplicadoSeeder
+    php artisan db:seed
 
 Depois de importado faça uma conferência para não haver inconsistências.
 
@@ -238,7 +238,7 @@ Depois de importado faça uma conferência para não haver inconsistências.
 
 Para executar este seeder isoladamente, utilize o comando:
 
-        php artisan db:seed --class=EssentialSeeder
+        php artisan db:seed
 
 **Generalização de Unidade no Template:** Para tornar o sistema compatível com diferentes unidades, a model `Selecao` utiliza o método `injetarUnidadeNoTemplate`. Esse método intercepta a criação de uma nova Seleção e substitui automaticamente os textos padrão pelo nome oficial da unidade (obtido dinamicamente via configurações do sistema).
 
