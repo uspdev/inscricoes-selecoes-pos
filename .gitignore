@@ -19,3 +19,6 @@ public/vendor
 
 .lando.yml
 Dockerfile.custom
+
+/.ddev
+ai-context.md

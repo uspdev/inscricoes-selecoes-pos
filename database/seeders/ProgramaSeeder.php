@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Programa;
 use Illuminate\Database\Seeder;
+use Uspdev\CadastrosAuxiliaresClient\Contracts\ProgramasClientInterface;
+use Uspdev\Replicado\Posgraduacao;
 
 class ProgramaSeeder extends Seeder
 {
@@ -14,32 +16,31 @@ class ProgramaSeeder extends Seeder
      */
     public function run()
     {
-        $programas = [
-            [
-                'nome' => 'Neurociências e Comportamento (NEC)',
-                'descricao' => 'Programa de Pós-Graduação em Neurociências e Comportamento'
-            ],
-            [
-                'nome' => 'Psicologia Escolar e do Desenvolvimento Humano (PSA)',
-                'descricao' => 'Programa de Pós-Graduação em Psicologia Escolar e do Desenvolvimento Humano'
-            ],
-            [
-                'nome' => 'Psicologia Clínica (PSC)',
-                'descricao' => 'Programa de Pós-Graduação em Psicologia Clínica',
-                'matricula' => true
-            ],
-            [
-                'nome' => 'Psicologia Experimental (PSE)',
-                'descricao' => 'Programa de Pós-Graduação em Psicologia Experimental'
-            ],
-            [
-                'nome' => 'Psicologia Social (PST)',
-                'descricao' => 'Programa de Pós-Graduação em Psicologia Social'
-            ],
-        ];
+        $isIntegrado = config('inscricoes-selecoes-pos.integracao-cadastros-auxiliares');
+        
+        if(!$isIntegrado) {
+            $programas = Posgraduacao::listarProgramas();
+            foreach ($programas as $programa) {
+                $nome = "{$programa['nomcur']}";
+                $descricao = "Programa de Pós-Graduação em {$programa['nomcur']}";
 
-        // adiciona registros na tabela programas
-        foreach ($programas as $programa)
-            Programa::create($programa);
+                Programa::updateOrCreate(
+                    ['nome' => $nome],
+                    ['descricao' => $descricao] 
+                );
+            }
+        }
+        else{
+            $programas = app(ProgramasClientInterface::class)->listar();
+            foreach ($programas as $programa) {
+                $nome = "{$programa['nomcur']} ({$programa['codslg']})";
+                $descricao = "Programa de Pós-Graduação em {$programa['nomcur']} ({$programa['codslg']})";
+
+                Programa::updateOrCreate(
+                    ['nome' => $nome],
+                    ['descricao' => $descricao] 
+                );
+            }
+        }
     }
 }
