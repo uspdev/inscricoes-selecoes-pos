@@ -31,7 +31,6 @@ class DatabaseSeeder extends Seeder
             CategoriaSeeder::class,         // adiciona categorias
             FuncaoSeeder::class,            // adiciona funções
             NivelSeeder::class,             // adiciona níveis
-            LinhaPesquisaSeeder::class,     // adiciona linhas de pesquisa/temas
             DisciplinaSeeder::class,        // adiciona disciplinas
         ]);
     }
