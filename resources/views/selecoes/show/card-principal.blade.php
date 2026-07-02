@@ -77,11 +77,13 @@
       updateCampoFluxoContinuo();
       updateCamposSolicitacoesIsencaoTaxaDataHora();
       updateCamposBoleto();
+      updateQuadrosSolicitacoesIsencaoTaxa();
 
       $('#tem_taxa').on('click', function () {
         updateCampoFluxoContinuo();
         updateCamposSolicitacoesIsencaoTaxaDataHora();
         updateCamposBoleto();
+        updateQuadrosSolicitacoesIsencaoTaxa();
       });
 
       $('#fluxo_continuo').on('click', function () {
@@ -156,6 +158,18 @@
         }
         $('#boleto_valor').parents('div').eq(1).show();
         $('#boleto_texto').parents('div').eq(1).show();
+      }
+    }
+
+    function updateQuadrosSolicitacoesIsencaoTaxa() {
+      if (!$('#tem_taxa').prop('checked')) {
+        $('#card-motivosisencaotaxa').hide();
+        $('#card-tiposarquivosolicitacaoisencaotaxa').hide();
+        $('#card-selecao-solicitacoesisencaotaxa').hide();
+      } else {
+        $('#card-motivosisencaotaxa').show();
+        $('#card-tiposarquivosolicitacaoisencaotaxa').show();
+        $('#card-selecao-solicitacoesisencaotaxa').show();
       }
     }
 
